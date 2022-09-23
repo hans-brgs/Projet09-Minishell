@@ -40,7 +40,8 @@ GCC			= gcc
 RM			= rm -f
 RMF			= rm -rf
 CFLAGS		= -Wall -Wextra -Werror -g
-CFLAGS_COMP = -lreadline
+CFLAGS_COMP = -lreadline 
+# CFLAGS_COMP += -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include/
 
 all:		libft $(NAME)
 
@@ -55,8 +56,8 @@ $(OBJ_DIR)/%.o: %.c
 			@$(GCC) $(CFLAGS) -c $< $(INCS) -o $@
 
 $(NAME):	$(OBJS) 
-			@$(GCC) $(OBJS) ${INCS} libft/libft.a -o $(NAME) $(CFLAGS_COMP) -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include/
-			@printf "\nFinished!\n";
+			@$(GCC) $(OBJS) ${INCS} libft/libft.a -o $(NAME) $(CFLAGS_COMP) 
+			@printf "\nDone!\n";
 
 libft:
 			@make -C ./libft

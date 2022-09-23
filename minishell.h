@@ -28,7 +28,7 @@
 # include "tknlist.h"
 # include "libft/includes/libft.h"
 
-# define SPE_CHAR "\"$'\\#=[]!> <|;{}()*?~&+-"
+# define SPE_CHAR "$\\#=[]!> <|;{}()*?~&+-/\"'°"
 # define EXIT_FAIL -1
 # define DEFAULT "\001\033[1;93m\002 ➜  \001\033[0;39m\002"
 # define GRAY "\001\033[1;90m\002"
@@ -78,7 +78,6 @@ char	*my_getenv(char *name, char **env, int len);
 char	**my_setenv(char *var, char *value, t_prompt *p, int len);
 char	*find_last_slash(char *path);
 char	**init_env(char **argv, t_prompt *p);
-char	**set_special_envar(t_cmdlist *cmd, t_prompt *p);
 int		check_len_var(char *var);
 void	extend_env(t_prompt *p, char *add);
 void	drop_env(t_prompt *p, char *drop);

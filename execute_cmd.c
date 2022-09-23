@@ -81,10 +81,7 @@ static int	exec_fork(t_cmdlist *cmd, t_prompt *p, int *tube)
 	if (cmd->pid == 0)
 		child(cmd, p, tube);
 	else
-	{
-		p->env = set_special_envar(cmd, p);
 		close_fd(cmd, tube);
-	}
 	return (EXIT_SUCCESS);
 }
 

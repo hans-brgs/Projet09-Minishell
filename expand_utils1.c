@@ -19,28 +19,29 @@ extern int	g_status;
 */
 int	is_quoted_dollar(char *str, int len)
 {
-	int	state;
+	int		state;
+	char	*str2;
+	char	*ptr_str;
+	char	c;
 
+	ptr_str = str;
 	state = 0;
-	while (*str && len-- > 0)
+	while (*str)
 	{
-		if (*str == '\"')
+		if (ft_strchr("'\"", *str) != NULL)
 		{
-			while (len-- > 0 && *str != '\"')
-				str++;
-		}
-		else if (*str == '\'')
-		{
-			state = 1;
-			while (len-- > 0)
-			{
-				if (--len && *(++str) == '\'')
-					state = 0;
-				str++;
-			}
-		}
-		else
+			c = *str;
 			str++;
+			str2 = ft_strchr(str, c);
+			if (str2 != NULL
+				&& (&ptr_str[len] >= &str[0] && &str2[0] > &ptr_str[len]))
+			{
+				if (c == '\'')
+					state = 1;
+			}
+			str = str2;
+		}
+		str++;
 	}
 	return (state);
 }

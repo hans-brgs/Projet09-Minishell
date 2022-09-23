@@ -12,17 +12,6 @@
 
 #include "minishell.h"
 
-char	**set_special_envar(t_cmdlist *cmd, t_prompt *p)
-{
-	int	i;
-
-	i = 0;
-	while (cmd->full_cmd[i])
-		i++;
-	p->env = my_setenv("_", cmd->full_cmd[i - 1], p, 1);
-	return (p->env);
-}
-
 /*
  */
 char	**init_env(char **argv, t_prompt *p)
