@@ -30,6 +30,8 @@ char	*parse_path(t_cmdlist *cmd, char **env)
 
 	i = 0;
 	all_paths = ft_split(my_getenv("PATH", env, 4), ':');
+	if (!all_paths)
+		return (ft_strdup(""));
 	while (all_paths[i])
 	{
 		folder_path = ft_strjoin(all_paths[i], "/");
