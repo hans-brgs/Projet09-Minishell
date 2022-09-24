@@ -41,15 +41,9 @@ RM			= rm -f
 RMF			= rm -rf
 CFLAGS		= -Wall -Wextra -Werror -g
 CFLAGS_COMP = -lreadline 
-# CFLAGS_COMP += -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include/
+CFLAGS_COMP += -L/Users/$(USER)/.brew/opt/readline/lib -I/Users/$(USER)/.brew/opt/readline/include/
 
 all:		libft $(NAME)
-
-brew :
-			rm -rf $(HOME)/.brew && git clone --depth=1 https://github.com/Homebrew/brew $(HOME)/.brew && echo 'export PATH=$(HOME)/.brew/bin:$(PATH)' >> $(HOME)/.zshrc && source $(HOME)/.zshrc && brew update
-			
-readline :
-			@brew install readline
 
 $(OBJ_DIR)/%.o: %.c
 			@mkdir -p $(OBJ_DIR)
@@ -72,6 +66,21 @@ fclean:		clean
 			@$(RM) $(NAME)
 
 re:			fclean all
+
+#-----------------------------------------#
+#				MY TOOLS				  #
+#-----------------------------------------#
+brew :
+			rm -rf $(HOME)/.brew && git clone --depth=1 https://github.com/Homebrew/brew $(HOME)/.brew && echo 'export PATH=$(HOME)/.brew/bin:$(PATH)' >> $(HOME)/.zshrc && source $(HOME)/.zshrc && brew update
+			
+readline :
+			@brew install readline
+
+MSG = ""
+git: 		fclean
+			@git add .
+			@git commit -am "`date +'%m-%d-%Y %H:%M:%S'` | $(MSG)"
+			@git push
 
 leak:		${NAME}
 			valgrind --leak-check=full ./$(NAME)
