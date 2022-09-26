@@ -45,9 +45,9 @@ int	builtin_parent(t_cmdlist *cmd, t_prompt *p)
 	int	len;
 
 	if (!cmd->full_cmd)
-		return (-1);
+		return (-2);
 	if (cmd->full_cmd[0] && ft_strchr(cmd->full_cmd[0], '/'))
-		return (-1);
+		return (-2);
 	len = ft_strlen(cmd->full_cmd[0]);
 	if (!ft_strncmp(cmd->full_cmd[0], "cd", len) && len == 2)
 		return (my_cd(cmd, p));
@@ -57,7 +57,7 @@ int	builtin_parent(t_cmdlist *cmd, t_prompt *p)
 		return (my_unset(cmd, p));
 	if (!ft_strncmp(cmd->full_cmd[0], "exit", len) && len == 4)
 		return (my_exit(cmd, p));
-	return (-1);
+	return (-2);
 }
 
 int	builtin_child(t_cmdlist *cmd, t_prompt *p)

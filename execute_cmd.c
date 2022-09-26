@@ -89,24 +89,20 @@ static int	exec_fork(t_cmdlist *cmd, t_prompt *p, int *tube)
 	Wait for the end of child processes.
 	Manage exit codes for child processes.
 */
-static int	multiple_wait(t_cmdlist *cmd, t_prompt *p)
+static void	multiple_wait(t_cmdlist *cmd, t_prompt *p)
 {
-	static int	is_exit;
+	int	built_error;
 
-	is_exit = 0;
 	while (cmd)
 	{
 		waitpid(cmd->pid, &g_status, 0);
-		builtin_parent(cmd, p);
-		if (g_status != 0)
-			is_exit++;
+		built_error = builtin_parent(cmd, p);
 		if (g_status == 2)
 			g_status = 130;
-		else if (p->is_exit == 0)
+		else if (p->is_exit == 0 && built_error < -1)
 			g_status = (g_status >> 8) & 0xff;
 		cmd = cmd->next;
 	}
-	return (is_exit);
 }
 
 /*

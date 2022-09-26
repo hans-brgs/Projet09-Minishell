@@ -80,14 +80,14 @@ static void	get_here_line(char **str, char *delim, char **env, pid_t pid)
 	free(buf);
 }
 
-static void	child_heredoc(char *hrdoc_str, char *delim, char **env, pid_t pid)
+static void	child_heredoc(char **hrdoc_str, char *delim, char **env, pid_t pid)
 {
 	char	*trim_delim;
 
 	signal(SIGINT, handle_heredoc);
 	signal(SIGQUIT, handle_heredoc);
 	trim_delim = trim_quotes(delim);
-	get_here_line(&hrdoc_str, trim_delim, env, pid);
+	get_here_line(hrdoc_str, trim_delim, env, pid);
 	free(trim_delim);
 }
 
@@ -107,7 +107,7 @@ int	heredoc(char *delim, char **env, pid_t pid)
 	pid_heredoc = fork();
 	if (pid_heredoc == 0)
 	{
-		child_heredoc(heredoc_str, delim, env, pid);
+		child_heredoc(&heredoc_str, delim, env, pid);
 		write(fd[1], heredoc_str, ft_strlen(heredoc_str));
 		free(heredoc_str);
 		exit(0);
