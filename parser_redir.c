@@ -32,6 +32,8 @@ static int	output_redir(char *str, char *op)
 		output = open(trim, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	else if (ft_strlen(op) == 2)
 		output = open(trim, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	if (output == -1)
+		ft_error(NDIR, 1, trim, " ");
 	free(trim);
 	return (output);
 }

@@ -16,35 +16,33 @@ extern int	g_status;
 
 int	my_export(t_cmdlist *cmd, t_prompt *p)
 {
-	char	*var;
-	char	*val;
-	int		i;
-	int		len;
+	int	i;
+	int	error;
 
-	i = 0;
-	if (cmd->full_cmd[1] && cmd->full_cmd[1][0] == '-')
-		return (ft_error(OPT, 1, "export: ", cmd->full_cmd[1]));
+	g_status = 0;
+	if (!cmd->full_cmd[1])
+	{
+		export_print_env(p);
+		return (EXIT_SUCCESS);
+	}
+	i = 1;
 	while (cmd->full_cmd[i])
 	{
-		len = check_len_var(cmd->full_cmd[i]);
-		if (ft_strchr(cmd->full_cmd[i], '='))
-		{
-			val = ft_strchr(cmd->full_cmd[i], '=');
-			val = val + 1;
-			var = ft_substr(cmd->full_cmd[i], 0, len);
-			my_setenv(var, val, p, len);
-			free(var);
-		}
+		if (ft_strchr(cmd->full_cmd[i], '=') && export_error(cmd->full_cmd[i]))
+			error = 1;
+		else
+			export_var(cmd->full_cmd[i], p);
 		i++;
 	}
-	g_status = 0;
+	if (error == 1)
+		g_status = 1;
 	return (EXIT_SUCCESS);
 }
 
 int	my_cd(t_cmdlist *cmd, t_prompt *p)
 {
 	g_status = 0;
-	if (!cmd->full_cmd[1])
+	if (!cmd->full_cmd[1] || cmd->full_cmd[1][0] == '~')
 	{
 		cd_to_home(cmd, p);
 		return (EXIT_SUCCESS);
@@ -60,17 +58,23 @@ int	my_cd(t_cmdlist *cmd, t_prompt *p)
 int	my_unset(t_cmdlist *cmd, t_prompt *p)
 {
 	int	i;
+	int	error;
 
-	i = 0;
+	i = 1;
 	g_status = 0;
 	if (cmd->full_cmd[1] && cmd->full_cmd[1][0] == '-')
 		return (ft_error(OPT, 1, "unset: ", cmd->full_cmd[1]));
 	while (cmd->full_cmd[i])
 	{
-		if (my_getenv(cmd->full_cmd[i], p->env, ft_strlen(cmd->full_cmd[i])))
+		if (unset_error(cmd->full_cmd[i]))
+			error = 1;
+		else if (my_getenv(cmd->full_cmd[i], p->env,
+				ft_strlen(cmd->full_cmd[i])))
 			drop_env(p, cmd->full_cmd[i]);
 		i++;
 	}
+	if (error == 1)
+		g_status = 1;
 	return (EXIT_SUCCESS);
 }
 
@@ -94,9 +98,9 @@ int	my_env(t_cmdlist *cmd, t_prompt *p)
 
 int	my_exit(t_cmdlist *cmd, t_prompt *p)
 {
-	g_status = 0;
 	if (!cmd->full_cmd[1])
 	{
+		g_status = (g_status >> 8) & 0xff;
 		ft_putstr_fd("exit\n", 2);
 		p->is_exit = 1;
 		return (EXIT_SUCCESS);

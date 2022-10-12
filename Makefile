@@ -4,7 +4,8 @@ SRCS		= main.c \
 			builtin.c \
 			builtin_cmd1.c \
 			builtin_cmd2.c \
-			builtin_cmd_utils.c \
+			builtin_cmd_utils1.c \
+			builtin_cmd_utils2.c \
 			cmd_list_handler.c \
 			environment1.c \
 			environment2.c \

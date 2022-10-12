@@ -32,6 +32,7 @@ static char	*error_str(int err_type)
 	ft_strlcpy(er[NCMD], ": command not found\n", 100);
 	ft_strlcpy(er[DUPERR], "dup2 failed\n", 100);
 	ft_strlcpy(er[OPT], ": invalid option\n", 100);
+	ft_strlcpy(er[INVID], ": not a valid identifier\n", 100);
 	ft_strlcpy(er[HNOSET], ": HOME not set\n", 100);
 	ft_strlcpy(er[TOOARGS], ": too many arguments\n", 100);
 	ft_strlcpy(er[NUMARGS], ": numeric argument required\n", 100);

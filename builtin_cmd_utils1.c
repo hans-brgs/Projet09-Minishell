@@ -41,3 +41,40 @@ void	cd_to_home(t_cmdlist *cmd, t_prompt *p)
 	}
 	update_pwd(p);
 }
+
+int	export_error(char *cmd)
+{
+	int	i;
+
+	i = 1;
+	if (cmd[0] == '-')
+		return (ft_error(OPT, 1, "export: ", cmd));
+	else if (cmd[0] == '=')
+		return (ft_error(INVID, 1, "export: ", cmd));
+	else if (ft_isalpha(cmd[0]) == 0 && cmd[0] != '_')
+		return (ft_error(INVID, 1, "export: ", cmd));
+	while (cmd[i] && cmd[i] != '=')
+	{
+		if (ft_isalnum(cmd[i]) == 0 && cmd[i] != '_')
+			return (ft_error(INVID, 1, "export: ", cmd));
+		i++;
+	}
+	return (0);
+}
+
+void	export_var(char *cmd, t_prompt *p)
+{
+	char	*var;
+	char	*val;
+	int		len;
+
+	len = check_len_var(cmd);
+	if (ft_strchr(cmd, '='))
+	{
+		val = ft_strchr(cmd, '=');
+		val = val + 1;
+		var = ft_substr(cmd, 0, len);
+		my_setenv(var, val, p, len);
+		free(var);
+	}
+}

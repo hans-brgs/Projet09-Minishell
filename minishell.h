@@ -58,6 +58,7 @@ enum	e_error
 	HNOSET = 15,
 	TOOARGS = 16,
 	NUMARGS = 17,
+	INVID = 18,
 };
 
 typedef struct s_prompt
@@ -168,6 +169,10 @@ int		my_pwd(t_cmdlist *cmd);
 //-----> builtin_cmd_utils.c :
 void	cd_to_home(t_cmdlist *cmd, t_prompt *p);
 void	update_pwd(t_prompt *p);
+int		export_error(char *var);
+void	export_var(char *cmd, t_prompt *p);
+void	export_print_env(t_prompt *p);
+int		unset_error(char *cmd);
 
 /* ----------------------------------------
 				  EXECUTOR

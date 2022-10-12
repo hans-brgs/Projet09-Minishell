@@ -49,9 +49,11 @@ int	builtin_parent(t_cmdlist *cmd, t_prompt *p)
 	if (cmd->full_cmd[0] && ft_strchr(cmd->full_cmd[0], '/'))
 		return (-2);
 	len = ft_strlen(cmd->full_cmd[0]);
-	if (!ft_strncmp(cmd->full_cmd[0], "cd", len) && len == 2)
+	if (!ft_strncmp(cmd->full_cmd[0], "cd", len) && len == 2
+		&& !cmd->next)
 		return (my_cd(cmd, p));
-	if (!ft_strncmp(cmd->full_cmd[0], "export", len) && len == 6)
+	if (!ft_strncmp(cmd->full_cmd[0], "export", len) && len == 6
+		&& cmd->full_cmd[1])
 		return (my_export(cmd, p));
 	if (!ft_strncmp(cmd->full_cmd[0], "unset", len) && len == 5)
 		return (my_unset(cmd, p));
@@ -69,6 +71,12 @@ int	builtin_child(t_cmdlist *cmd, t_prompt *p)
 	if (cmd->full_cmd[0] && ft_strchr(cmd->full_cmd[0], '/'))
 		return (-1);
 	len = ft_strlen(cmd->full_cmd[0]);
+	if (!ft_strncmp(cmd->full_cmd[0], "cd", len) && len == 2
+		&& cmd->next)
+		return (my_cd(cmd, p));
+	if (!ft_strncmp(cmd->full_cmd[0], "export", len) && len == 6
+		&& !cmd->full_cmd[1])
+		return (my_export(cmd, p));
 	if (!ft_strncmp(cmd->full_cmd[0], "pwd", len) && len == 3)
 		return (my_pwd(cmd));
 	if (!ft_strncmp(cmd->full_cmd[0], "env", len) && len == 3)
