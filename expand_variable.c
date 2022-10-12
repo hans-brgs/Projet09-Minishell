@@ -12,6 +12,18 @@
 
 #include "minishell.h"
 
+static int	dollar_follow_by_quote(char *str, int state)
+{
+	if (ft_strlen(str) > 1 && str[0] == '$')
+	{
+		if (str[1] == '\'' && state == 0)
+			state = 3;
+		else if (str[1] == '"' && state == 1)
+			state = 3;
+	}
+	return (state);
+}
+
 /*
 	Parses each of the token strings created by the lexer,
 	as soon as a dollar is found, 
@@ -35,6 +47,7 @@ static char	*expand(t_tknlist **expd, char *str, char **env, pid_t pid)
 		len = expd_token_length(str);
 		sub_str = ft_substr(str, 0, len);
 		state = is_quoted_dollar(ptr_str, ft_strlen(ptr_str) - ft_strlen(str));
+		state = dollar_follow_by_quote(str, state);
 		tkn_insert_end(expd, expand_dollar(sub_str, env, state, pid));
 		free(sub_str);
 		str = str + len;

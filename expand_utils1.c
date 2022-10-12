@@ -100,13 +100,13 @@ char	*expand_dollar(char *str, char **env, int state, pid_t pid)
 		return (ft_strdup(str));
 	else if (str[0] == '$')
 	{
-		if (ft_strlen(str) == 1)
+		if (ft_strlen(str) == 1 && state != 3)
 			return (ft_strdup("$"));
 		if (str[1] == '$' && state == 0)
 			return (ft_itoa(pid));
 		if (str[1] == '?' && state == 0)
 			return (ft_itoa(g_status));
-		if (state == 0)
+		if (state == 0 || state == 3)
 		{
 			new_str = my_getenv(&str[1], env, ft_strlen(&str[1]));
 			if (new_str)
